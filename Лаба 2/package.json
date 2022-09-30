@@ -1,0 +1,10 @@
+{
+  "name": "lab2",
+  "version": "1.0.0",
+  "description": ": Модель Джелинского-Моранды",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "result": "node index.js"
+  }
+}
