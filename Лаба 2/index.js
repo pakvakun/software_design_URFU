@@ -1,54 +1,21 @@
-const FindErrors = () => {
-  var intervals = [9, 12, 11, 4, 7, 2, 5, 8, 5, 7, 1, 6, 1, 9, 4, 1, 3, 3, 6, 1, 11, 33, 7, 91, 2, 1];
-  var intervalsCount = intervals.length;
-  var HIGH = 100000;
-  var STEP = 0.0001;
+const FindErrors = require("./find-errors");
+const getK = require("./get-k");
+const getTime = require("./get-time");
+const getXnP1 = require("./get-XnP1");
 
-  const left = (b) => {
-    var result = 0;
-    for (let i = 0, j = 1; i < intervalsCount; i++, j++) {
-      result += (1 / (b - j + 1));
-    }
-    return result;
-  };
+var intervals = [9, 12, 11, 4, 7, 2, 5, 8, 5, 7, 1, 6, 1, 9, 4, 1, 3, 3, 6, 1, 11, 33, 7, 91, 2, 1];
 
-  // Сумма интервалов между ошибками.
-  const getSum = () => {
-    var result = 0;
-    for (let i = 0; i < intervalsCount; i++) {
-      result += intervals[i];
-    }
-    return result;
-  };
 
-  // Сумма произведений интервалов между ошибками на их порядковый номер.
-  const getSumI = () => {
-    var result = 0;
-    for (let i = 0, j = 1; i < intervalsCount; i++, j++) {
-      result += j * intervals[i];
-    }
-    return result;
-  };
+const B = FindErrors(intervals);
 
-  const right = (b) => {
-    return (intervalsCount * getSum()) / ((b + 1) * getSum() - getSumI());
-  };
+const K = getK(intervals, B)
 
-  var r = 0.0;
-  var r1 = 0.0;
-  var d = intervalsCount;
-  r = Infinity;
-  for (let i = 0; i < HIGH; i++) {
-    r1 = r;
-    r = Math.abs(left(d) - right(d));
-    if (r > r1) {
-      break;
-    }
-    d = d + STEP;
-  };
+const XnP1 = getXnP1(B, K, intervals);
 
-  console.log(`result: ${d}`);
-  console.log(`Число ошибок в системе: ~ ${Math.round(d)}`);
-}
+const time = getTime(B, K, intervals);
 
-FindErrors();
+
+console.log(`Число ошибок в системе: ~ ${Math.round(B)}`);
+console.log(`Коэффициент пропорциональности: ~ ${K.toFixed(5)}`);
+console.log(`Cреднее время Xn+1 : ~ ${XnP1}`);
+console.log(`Время до окончания тестирования: ~ ${time}`);
